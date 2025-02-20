@@ -1,3 +1,4 @@
+<!-- https://fuckwechat.fuck-qq.com?url=替换为解锁的链接 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +34,7 @@
             border-radius: 4px;
             background-color: #333;
             color: white;
-            text-align: center; /* 水平居中输入的文字 */
+            text-align: center;
         }
         .modal button {
             background-color: #555;
@@ -42,7 +43,7 @@
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
-            width: 100%; /* 按钮与输入框宽度一致 */
+            width: 100%;
         }
         .modal button:hover {
             background-color: #777;
@@ -58,7 +59,7 @@
 <body>
     <div class="modal" id="modal">
         <h3>请输入被微信封禁爆风险的网址：</h3>
-        <input type="text" id="urlInput" placeholder="例如：fuck-qq.com">
+        <input type="text" id="urlInput" placeholder="例如：https://example.com">
         <button id="confirmBtn">确认</button>
     </div>
     <iframe id="iframe"></iframe>
@@ -68,15 +69,25 @@
         const confirmBtn = document.getElementById('confirmBtn');
         const urlInput = document.getElementById('urlInput');
 
+        // 获取 URL 中的参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlParam = urlParams.get('url');
+
+        // 如果 URL 参数存在，直接加载 iframe
+        if (urlParam) {
+            iframe.src = urlParam;
+            modal.style.display = 'none';
+            iframe.style.display = 'block';
+        }
+
         confirmBtn.addEventListener('click', () => {
             let url = urlInput.value.trim(); // 获取用户输入
             if (url) {
                 if (!/^https?:\/\//i.test(url)) {
                     url = "http://" + url; // 自动添加 http://
                 }
-                iframe.src = url; // 设置 iframe 源
-                modal.style.display = 'none'; // 隐藏弹窗
-                iframe.style.display = 'block'; // 显示 iframe
+                // 更新 URL 参数并跳转
+                window.location.search = `?url=${encodeURIComponent(url)}`;
             } else {
                 alert("请输入有效的网址！");
             }
